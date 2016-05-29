@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Deep-Insights.js – Waste Facilities in NYC</title>
+    <meta name=viewport content="width=device-width initial-scale=1">
+    <link href="http://cartodb.com/favicon.ico" rel="shortcut icon" />
+    <link rel="stylesheet" href="http://libs.cartocdn.com/di.js/v0/themes/css/deep-insights.css" />
+    <script src=" http://libs.cartocdn.com/di.js/v0/deep-insights.uncompressed.js"></script>
+    <style type="text/css">
+        html,
+        body {
+            position: relative;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="Dashboard-canvas" id="dashboard"></div>
+
+    <script type="text/javascript">
+        var vizJSONurl = 'https://bernardol.cartodb.com/api/v3/viz/9d0fe838-2543-11e6-8f59-0e31c9be1b51/viz.json';
+
+        window.onload = function() {
+
+            cartodb.deepInsights.createDashboard('#dashboard', vizJSONurl, {
+                no_cdn: false
+            }, function(err, dashboard) {
+                var map = dashboard.getMap();
+                // var params = {
+                //     "title": "Waste Facilites",
+                //     "column": "county",
+                //     "aggregation": "count"
+                // };
+                // dashboard.createCategoryWidget(params, map.getLayer(2));
+
+                // var params = {
+                //     "title": "Waste Facilites – Community District",
+                //     "column": "bcd_in",
+                //     "aggregation": "count"
+                // };
+                // dashboard.createCategoryWidget(params, map.getLayer(2));
+
+                var params = {
+                    "title": "Waste Facilites – Neighborhood",
+                    "column": "neigh",
+                    "aggregation": "count"
+                };
+                dashboard.createCategoryWidget(params, map.getLayer(2));
+
+                var params = {
+                    "title": "Type of Facility",
+                    "column": "ac_desc_si",
+                    "aggregation": "count"
+                };
+                dashboard.createCategoryWidget(params, map.getLayer(2));
+
+                params = {
+                    "title": "Waste Received",
+                    "type": "histogram",
+                    "column": "j_tot_rec",
+                    "operation": "avg",
+                    "bins": 10
+                }
+                dashboard.createHistogramWidget(params, map.getLayer(2));
+
+                params = {
+                    "title": "Sum of Waste Received",
+                    "column": "j_tot_rec",
+                    "operation": "sum",
+                    "prefix": "",
+                }
+                dashboard.createFormulaWidget(params, map.getLayer(2));
+
+            });
+
+        };
+    </script>
+</body>
+
+</html>
